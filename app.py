@@ -19,8 +19,8 @@ def connect_db():
 def insert_trip(destination, departure_date, return_date, activities, accommodation, plan_details):
     conn = connect_db()
     cur = conn.cursor()
-    sql = """INSERT INTO trips (destination, departure_date, return_date, activities, accommodation, plan_details)
-             VALUES (%s, %s, %s, %s, %s, %s);"""
+    sql = '''INSERT INTO trips (destination, departure_date, return_date, activities, accommodation, plan_details)
+             VALUES (%s, %s, %s, %s, %s, %s);'''
     cur.execute(sql, (destination, departure_date, return_date, activities, accommodation, plan_details))
     conn.commit()
     cur.close()
@@ -32,9 +32,10 @@ def generate_content(prompt):
     return response.text
 
 # Streamlit UI for trip planning
+st.set_page_config(layout="wide")  # Set wide layout to maximize screen space
 st.title("🏝️ AI Travel Planning")
 
-prompt_template = """
+prompt_template = '''
 You are an expert at planning overseas trips.
 
 Please take the users request and plan a comprehensive trip for them.
@@ -49,17 +50,17 @@ Please include the following details:
 
 The user's request is:
 {prompt}
-"""
+'''
 
 # User inputs
-destination = st.text_input("Destination")
+destination = st.text_input("Destination", placeholder="Enter your dream destination")
 departure_date = st.date_input("Departure Date")
 return_date = st.date_input("Return Date")
-activities = st.text_area("Activities you're interested in")
+activities = st.text_area("Activities you're interested in", placeholder="List activities you'd like to experience")
 accommodation_preference = st.selectbox("Accommodation Preference", ["Hotel", "Hostel", "Apartment", "Other"])
 
 if st.button("Give me a plan!"):
-    full_request = f"Destination: {destination}, Departure Date: {departure_date}, Return Date: {return_date}, Activities: {activities}, Accommodation: {accommodation_preference}"
+    full_request = f"Destination: {destination}, Departure Date: {departure_date.strftime('%Y-%m-%d')}, Return Date: {return_date.strftime('%Y-%m-%d')}, Activities: {activities}, Accommodation: {accommodation_preference}"
     prompt = prompt_template.format(prompt=full_request)
     reply = generate_content(prompt)
     st.write(reply)
