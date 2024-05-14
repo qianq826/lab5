@@ -28,3 +28,13 @@ source venv/bin/activate
 # Run the app
 streamlit run app.py
 ```
+
+
+## Lessons Learned
+
+- How to use Gemini API to create a streamlit app
+- Connect app to firebase and store the todos in firebase
+
+## Questions / Uncertainties
+
+How to present the data stored live on streamlit from firebase.
